@@ -1,2 +1,4 @@
 # Ignore wheels directory
 wheels/
+.*venv*/
+__pycache__/

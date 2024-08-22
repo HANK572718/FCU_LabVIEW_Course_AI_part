@@ -1,10 +1,9 @@
-import platform
-import sys
-import torch
-import time
-
 
 def test_tensor_operations():
+    import platform
+    import sys
+    import torch
+    import time
     results = []  # 用於存儲所有結果的列表
 
     # 1. 顯示 Python 版本資訊、位元數、位置
@@ -63,8 +62,25 @@ def test_tensor_operations():
     # 將結果轉換為字串並返回
     return "\n".join(results)
 
+def get_info():
+    import platform
+    import sys
+    import time
+    results = []  # 用於存儲所有結果的列表
+
+    # 1. 顯示 Python 版本資訊、位元數、位置
+    python_version = platform.python_version()
+    python_bits = platform.architecture()[0]
+    python_executable = sys.executable  # 取得 Python 執行檔位置
+
+    results.append("=== Python Information ===")
+    results.append(f"Version: {python_version}")
+    results.append(f"Bits: {python_bits}")
+    results.append(f"Executable Location: {python_executable}\n")
+    return "\n".join(results)
 
 # 調用測試函數並打印結果
 if __name__ == "__main__":
-    output = test_tensor_operations()
+    # output = test_tensor_operations()
+    output = get_info()
     print(output)
