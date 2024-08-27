@@ -2,3 +2,4 @@
 wheels/
 .*venv*/
 __pycache__/
+kernel.errors.txt
