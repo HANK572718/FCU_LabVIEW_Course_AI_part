@@ -3,3 +3,4 @@ wheels/
 .*venv*/
 __pycache__/
 **/kernel.errors.txt
+poetry.lock
