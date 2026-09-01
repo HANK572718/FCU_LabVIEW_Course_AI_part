@@ -1,47 +1,62 @@
-# LabVIEW + Python 課程｜AI 段教材
+# FCU LabVIEW × Python 課程｜AI Part
 
-逢甲大學「LabVIEW + Python」課程中，AI 延伸段落的教材與範例程式（2024，定版）。
-課程前半由另一位講師負責 LabVIEW 基礎，這個 repo 是後半的 AI 部分 ——
-從 LabVIEW 呼叫 Python，一路做到把 YOLOv10 用 OpenVINO 跑起來。
+逢甲大學 2024 暑期「LabVIEW 基礎培訓與學術應用線上研習營」的 AI 段教材，
+由諾亞思科技協辦。本 repo 收錄 AI Part 的範例程式與練習題，
+涵蓋 LabVIEW 與 Python 的串接方式，以及 YOLOv10 + OpenVINO 的推論實作。
 
-原規劃 2 小時，後依課堂需求擴充為 4 小時。
+## 教學資源
 
-## 一個刻意的設計取捨
+| 資源 | 連結 |
+|---|---|
+| 教材主頁：環境建置教學、課程簡報 | https://hank.craft.me/r5ImVc5OFYpBgo |
+| 0923 課堂定版：同上，附 `LabVIEW_AI_20240923_fix.pdf` | https://hank.craft.me/IT7tFJ7qtJ7GJf |
 
-授課老師提出一個要求：**教材必須能脫離實體設備執行。**
+環境建置的完整步驟與截圖請以教材主頁為準，本 README 只列重點。
 
-這個限制決定了整份教材的形態 —— 每個單元都設計成「有設備更好、沒設備也跑得完」，
-機器學習的部分一律準備好 CPU 可跑的路徑，不假設教室有 GPU。
-連套件安裝都提供 5 種方法，包含 `pip install --find-links wheels` 的離線安裝，
-因為教室電腦不一定有網路、也不一定裝得動東西。
+## 課程內容
 
-實體設備會缺席，網路會斷，但課還是要上完。
-
-## 內容
-
-| 資料夾 | 主題 | 內容 |
+| 目錄 | 主題 | 說明 |
 |---|---|---|
-| `Python_Node/` | LabVIEW ↔ Python 互通 | 用 LabVIEW 的 Python Node 直接呼叫 Python 函式，含對應的 `.vi` 與 `.py` 成對範例 |
-| `HTTP/` | 以 HTTP 服務串接 | Python 端起服務、LabVIEW 端發 request；含 `request_tutorial` 與水塔控制情境範例 |
-| `MachineLearning/` | 推論實作 | YOLOv10 模型最佳化與 OpenVINO 推論，含 `.vi` 呼叫端 |
-| `pip_install.ipynb` | 環境安裝 | 5 種安裝方法，含離線 wheels |
-| `_practice_answer/` | 練習解答 | — |
+| `Python_Node/` | Python Node 直呼 | LabVIEW 2019+ 的 Python Node 呼叫 Python 函式，`.vi` 與 `.py` 成對範例 |
+| `HTTP/` | HTTP / REST 串接 | Python 端以 FastAPI 建立 server，LabVIEW 端以 HTTP Client VI 呼叫；含 request 教學與水塔控制範例 |
+| `MachineLearning/` | 推論實作 | YOLOv10 模型最佳化與 OpenVINO 推論，含裝置列舉、CPU / GPU 計算時間比較，以及 LabVIEW 呼叫端 |
+| `_practice_answer/` | 練習題解答 | practice1（HTTP）、practice2（推論） |
+| `pip_install.ipynb` | 套件安裝 | 一鍵安裝 notebook，為課程主推的安裝方式 |
 
-兩種串接方式是刻意並列的：**Python Node 適合單機、低延遲；HTTP 適合跨機、鬆耦合。**
-課堂上先做前者再做後者，學生才會知道為什麼要有第二種。
+課程亦示範以 pyngrok 將本地 FastAPI server 轉發至公網，供教室環境無法直接連線時使用。
 
-## 環境
+## 環境需求
+
+- Windows
+- Python **3.9 64-bit**（YOLOv10 的硬性需求）
+- Git
+- 虛擬環境擇一：Anaconda（課程示範）、venv、Poetry
+
+## 安裝
 
 ```bash
-poetry install
-poetry run jupyter lab
+git clone https://github.com/HANK572718/FCU_LabVIEW_Course_AI_part.git
+cd FCU_LabVIEW_Course_AI_part
 ```
 
-`pyproject.toml` 中 CUDA 版 torch 的 wheel URL 已註解保留，
-預設走 CPU 版本 —— 這是為了讓沒有獨顯的教室電腦也能安裝成功。
-需要 GPU 時把對應的三行取消註解即可（注意 wheel 檔名要對應 Python 版本）。
+建立 Python 3.9 虛擬環境後，以下列任一方式安裝套件：
 
-主要套件：Poetry、OpenVINO、NNCF、PyTorch、JupyterLab、FastAPI、pyngrok。
+- **方法一（主推）**：在 VS Code 開啟 `pip_install.ipynb`，選擇該虛擬環境為 kernel 後逐格執行
+- **方法二**：`poetry install`（`pyproject.toml` 限 Python ≥ 3.9、Windows）
+
+`pyproject.toml` 中 CUDA 版 torch 的 wheel 已註解保留，預設安裝 CPU 版本。
+需要 GPU 時取消對應三行的註解，並確認 wheel 檔名與 Python 版本相符。
+
+## 注意事項
+
+1. 範例程式已放在各目錄中，練習題解答另置於 `_practice_answer/`。
+   **使用練習題程式時請複製到對應目錄**：
+   - practice1 的 `calculator.py` → `HTTP/`
+   - practice2 的兩支 inference 程式 → `MachineLearning/`
+2. **執行本專案的 LabVIEW 程式前，請先關閉其他 LabVIEW 專案**，
+   否則 Application Directory 會讀到其他專案的路徑而非 VI 本身的路徑。
+3. Python Node 需指定 `python.exe` 的絕對路徑。
+4. 本 repo 自 2024-09-23 定版後未再更新。
 
 ## 授權
 
